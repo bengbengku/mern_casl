@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const { ObjectId } = mongoose.Schema
+const { ObjectId } = mongoose.Schema;
 
 const productSchema = mongoose.Schema(
   {
@@ -25,14 +25,16 @@ const productSchema = mongoose.Schema(
       type: ObjectId,
       ref: 'Category',
     },
-    tag: {
-      type: ObjectId,
-      ref: 'Tag',
-    },
+    tag: [
+      {
+        type: ObjectId,
+        ref: 'Tag',
+      },
+    ],
   },
   {
     timestamps: true,
   }
-)
+);
 
-module.exports = mongoose.model('Product', productSchema)
+module.exports = mongoose.model('Product', productSchema);

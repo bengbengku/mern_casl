@@ -1,4 +1,4 @@
-const { AbilityBuilder, Ability } = require('@casl/ability')
+const { AbilityBuilder, Ability, createMongoAbility } = require('@casl/ability')
 
 const getToken = (req) => {
   let token = req.headers.authorization
@@ -37,7 +37,7 @@ const policyFor = (user) => {
   } else {
     policies['guest'](user, builder)
   }
-  return new Ability(builder.rules)
+  return new createMongoAbility(builder.rules)
 }
 
 module.exports = { getToken, policies, policyFor }

@@ -10,6 +10,9 @@ const categoryRoute = require('./app/category/routes')
 const tagRoute = require('./app/tag/routes')
 const authRoute = require('./app/auth/routes')
 const deliveryRoute = require('./app/delivery/routes')
+const cartItemsRoute = require('./app/cart/routes')
+const orderRoute = require('./app/order/routes')
+const invoiceRoute = require('./app/invoice/routes')
 
 const app = express()
 
@@ -29,6 +32,9 @@ app.use('/api', productRoute)
 app.use('/api', categoryRoute)
 app.use('/api', tagRoute)
 app.use('/api', deliveryRoute)
+app.use('/api', cartItemsRoute)
+app.use('/api', orderRoute)
+app.use('/api', invoiceRoute)
 app.use('/auth', authRoute)
 
 app.use('/', (req, res) => {

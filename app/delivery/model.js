@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const { ObjectId } = mongoose.Schema
+const { ObjectId } = mongoose.Schema;
 
 const deliveryAddressSchema = mongoose.Schema(
   {
@@ -9,19 +9,9 @@ const deliveryAddressSchema = mongoose.Schema(
       required: [true, 'Nama alamat tidak boleh kosong.'],
       maxLength: [255, 'Panjang maksimal alamat adalah 255 karakter.'],
     },
-    kelurahan: {
-      type: String,
-      required: [true, 'Nama kelurahan tidak boleh kosong.'],
-      maxLength: [255, 'Panjang maksimal kelurahan adalah 255 karakter.'],
-    },
-    kecamatan: {
-      type: String,
-      required: [true, 'Nama kecamatan tidak boleh kosong.'],
-      maxLength: [255, 'Panjang maksimal kecamatan adalah 255 karakter.'],
-    },
     kabupaten: {
       type: String,
-      required: [true, 'Nama kabupaten tidak boleh kosong.'],
+      required: [true, 'Nama kabupaten/kota tidak boleh kosong.'],
       maxLength: [255, 'Panjang maksimal kabupaten adalah 255 karakter.'],
     },
     provinsi: {
@@ -40,6 +30,6 @@ const deliveryAddressSchema = mongoose.Schema(
     },
   },
   { timestamps: true }
-)
+);
 
-module.exports = mongoose.model('DeliveryAddress', deliveryAddressSchema)
+module.exports = mongoose.model('DeliveryAddress', deliveryAddressSchema);

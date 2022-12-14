@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const { ObjectId } = mongoose.Schema
+const { ObjectId } = mongoose.Schema;
 
 const orderItemSchema = mongoose.Schema(
   {
@@ -26,8 +26,9 @@ const orderItemSchema = mongoose.Schema(
       type: ObjectId,
       ref: 'Order',
     },
+    image_url: String,
   },
   { timestamps: true }
-)
+);
 
-module.exports = mongoose.model('OrderItem', orderItemSchema)
+module.exports = mongoose.model('OrderItem', orderItemSchema);

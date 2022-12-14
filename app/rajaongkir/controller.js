@@ -31,4 +31,23 @@ const rajaOngkirCity = async (req, res) => {
   }
 };
 
-module.exports = { rajaOngkirProvinsi, rajaOngkirCity };
+const rajaOngkirCost = async (req, res) => {
+  try {
+    const { origin, destination, weight, courier } = req.body;
+    const { data } = await axios.post(
+      'https://api.rajaongkir.com/starter/cost',
+      { origin, destination, weight, courier },
+      {
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+          key: process.env.RAJA_ONGKIR_API_KEY,
+        },
+      }
+    );
+    res.json(data);
+  } catch (err) {
+    return res.send(err);
+  }
+};
+
+module.exports = { rajaOngkirProvinsi, rajaOngkirCity, rajaOngkirCost };

@@ -4,7 +4,6 @@ const CartItem = require('../cart-item/model');
 const update = async (req, res, next) => {
   try {
     const { cart } = req.body;
-    console.log(cart);
     const productIds = cart.map((item) => item._id);
     const products = await Product.find({ _id: { $in: productIds } });
     let cartItems = cart.map((item) => {

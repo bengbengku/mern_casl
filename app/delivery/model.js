@@ -6,13 +6,17 @@ const deliveryAddressSchema = mongoose.Schema(
   {
     nama: {
       type: String,
-      required: [true, 'Nama alamat tidak boleh kosong.'],
+      required: [true, 'Nama tidak boleh kosong.'],
       maxLength: [255, 'Panjang maksimal alamat adalah 255 karakter.'],
     },
-    kabupaten: {
+    kota: {
       type: String,
       required: [true, 'Nama kabupaten/kota tidak boleh kosong.'],
       maxLength: [255, 'Panjang maksimal kabupaten adalah 255 karakter.'],
+    },
+    code_kota: {
+      type: String,
+      required: [true, 'Kode Kota tidak boleh kosong.'],
     },
     provinsi: {
       type: String,

@@ -1,7 +1,6 @@
-const mongoose = require('mongoose')
-const AutoIncrement = require('mongoose-sequence')(mongoose)
-const { ObjectId } = mongoose.Schema
-const Invoice = require('../invoice/model')
+const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
+const { ObjectId } = mongoose.Schema;
 
 const orderSchema = mongoose.Schema(
   {
@@ -15,52 +14,42 @@ const orderSchema = mongoose.Schema(
       default: 0,
     },
     delivery_address: {
+      kota: {
+        type: String,
+        required: [true, 'Nama kabupaten/kota tidak boleh kosong.'],
+        maxLength: [255, 'Panjang maksimal kabupaten adalah 255 karakter.'],
+      },
+      code_kota: {
+        type: String,
+        required: [true, 'Kode Kota tidak boleh kosong.'],
+      },
       provinsi: {
         type: String,
         required: [true, 'Nama provinsi tidak boleh kosong.'],
+        maxLength: [255, 'Panjang maksimal provinsi adalah 255 karakter.'],
       },
-      kabupaten: {
+      detail: {
         type: String,
-        required: [true, 'Nama kabupaten tidak boleh kosong.'],
+        required: [true, 'Detail tidak boleh kosong.'],
+        maxLength: [1000, 'Panjang maksimal detail alamat adalah 1000 karakter.'],
       },
-      kecamatan: {
-        type: String,
-        required: [true, 'Nama kecamatan tidak boleh kosong.'],
-      },
-      kelurahan: {
-        type: String,
-        required: [true, 'Nama kelurahan tidak boleh kosong.'],
-      },
-      detail: { type: String },
     },
     user: {
       type: ObjectId,
       ref: 'User',
     },
+    total: {
+      type: Number,
+      required: [true, 'Total tidak boleh kosong.'],
+    },
     order_items: [{ type: ObjectId, ref: 'OrderItem' }],
   },
   { timestamps: true }
-)
+);
 
-orderSchema.plugin(AutoIncrement, { inc_field: 'order_number' })
+orderSchema.plugin(AutoIncrement, { inc_field: 'order_number' });
 orderSchema.virtual('items_count').get(function () {
-  return this.order_items.reduce((total, item) => total + parseInt(item.qty), 0)
-})
+  return this.order_items.reduce((total, item) => total + parseInt(item.qty), 0);
+});
 
-orderSchema.post('save', async () => {
-  let sub_total = this.order_items.reduce(
-    (total, item) => (total += item.price * item.qty),
-    0
-  )
-  let invoice = new Invoice({
-    user: this.user,
-    order: this._id,
-    sub_total: sub_total,
-    delivery_fee: parseInt(this.delivery_fee),
-    total: parseInt(sub_total + this.delivery_fee),
-    delivery_address: this.delivery_address,
-  })
-  await invoice.save()
-})
-
-module.exports = mongoose.model('Order', orderSchema)
+module.exports = mongoose.model('Order', orderSchema);

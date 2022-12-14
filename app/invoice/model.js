@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Schema
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema;
 
 const invoiceSchema = mongoose.Schema(
   {
@@ -12,23 +12,30 @@ const invoiceSchema = mongoose.Schema(
       required: [true, 'delivery_fee tidak boleh kosong.'],
     },
     delivery_address: {
+      nama: {
+        type: String,
+        required: [true, 'Nama tidak boleh kosong.'],
+        maxLength: [255, 'Panjang maksimal alamat adalah 255 karakter.'],
+      },
+      kota: {
+        type: String,
+        required: [true, 'Nama kabupaten/kota tidak boleh kosong.'],
+        maxLength: [255, 'Panjang maksimal kabupaten adalah 255 karakter.'],
+      },
+      code_kota: {
+        type: String,
+        required: [true, 'Kode Kota tidak boleh kosong.'],
+      },
       provinsi: {
         type: String,
         required: [true, 'Nama provinsi tidak boleh kosong.'],
+        maxLength: [255, 'Panjang maksimal provinsi adalah 255 karakter.'],
       },
-      kabupaten: {
+      detail: {
         type: String,
-        required: [true, 'Nama kabupaten tidak boleh kosong.'],
+        required: [true, 'Detail tidak boleh kosong.'],
+        maxLength: [1000, 'Panjang maksimal detail alamat adalah 1000 karakter.'],
       },
-      kecamatan: {
-        type: String,
-        required: [true, 'Nama kecamatan tidak boleh kosong.'],
-      },
-      kelurahan: {
-        type: String,
-        required: [true, 'Nama kelurahan tidak boleh kosong.'],
-      },
-      detail: { type: String },
     },
     total: {
       type: Number,
@@ -43,6 +50,6 @@ const invoiceSchema = mongoose.Schema(
     order: { type: ObjectId, ref: 'Order' },
   },
   { timestamps: true }
-)
+);
 
-module.exports = mongoose.model('Invoice', invoiceSchema)
+module.exports = mongoose.model('Invoice', invoiceSchema);

@@ -81,15 +81,23 @@ const store = async (req, res, next) => {
 
 const index = async (req, res, next) => {
   try {
-    const { limit = 10, skip = 0, q = '', category = '', tag = [] } = req.query;
+    const { q = '', category = '', tag = [] } = req.query;
 
     let criteria = {};
+    let tagSplit = tag.toString().split(',');
 
     if (q.length) {
       criteria = {
         ...criteria,
         name: { $regex: `${q}`, $options: 'i' },
       };
+    }
+
+    if (tag.length) {
+      let tagRes = await Tag.find({ name: { $in: tagSplit } });
+      if (tagRes.length > 0) {
+        criteria = { ...criteria, tag: { $in: tagRes.map((t) => t._id) } };
+      }
     }
 
     if (category.length) {
@@ -101,23 +109,32 @@ const index = async (req, res, next) => {
       }
     }
 
-    if (tag.length) {
-      let tagRes = await Tag.find({ name: { $in: tag } });
-      if (tagRes.length > 0) {
-        criteria = { ...criteria, tag: { $in: tagRes.map((t) => t._id) } };
-      }
+    let query = Product.find(criteria);
+
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.limit) || 8;
+    const skip = (page - 1) * pageSize;
+    const total = await Product.countDocuments(criteria);
+
+    const pages = Math.ceil(total / pageSize);
+
+    query = query.skip(skip).limit(pageSize);
+
+    if (page > pages) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No page found.',
+      });
     }
 
-    let count = await Product.find().countDocuments();
+    const results = await query.populate('category').populate('tag');
 
-    const result = await Product.find(criteria)
-      .skip(parseInt(skip))
-      .limit(parseInt(limit))
-      .populate('category')
-      .populate('tag');
-    res.json({
-      data: result,
-      count,
+    res.status(200).json({
+      status: 'success',
+      data: results,
+      count: results.length,
+      page,
+      pages,
     });
   } catch (err) {
     next(err);

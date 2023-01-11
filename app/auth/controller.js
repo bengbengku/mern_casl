@@ -32,8 +32,10 @@ async function localStrategy(email, password, done) {
     if (!user) return done();
     if (bcrypt.compareSync(password, user.password)) {
       ({ password, ...userWithoutPassword } = user.toJSON());
+
       return done(null, userWithoutPassword);
     }
+    return done();
   } catch (err) {
     done(err, null);
   }

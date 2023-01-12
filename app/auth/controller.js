@@ -76,10 +76,11 @@ const logout = async (req, res, next) => {
   );
 
   if (!token || !user) {
-    res.json({
+    res.status(500).json({
       error: 1,
       message: 'No user found!',
     });
+    return;
   }
 
   return res.json({

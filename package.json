@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "set DEBUG=anggiat-server:* && node ./bin/www"
+    "start": "set DEBUG=anggiat-server:* && nodemon ./bin/www"
   },
   "dependencies": {
     "@casl/ability": "^6.3.2",

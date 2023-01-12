@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "set DEBUG=anggiat-server:* && node ./bin/www",
+      "src": "./bin/www",
       "use": "@now/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "set DEBUG=anggiat-server:* && node ./bin/www"
+      "dest": "./bin/www"
     }
   ]
 }
